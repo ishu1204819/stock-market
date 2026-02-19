@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Dashboard (Simulated)</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: white;
+      text-align: center;
+    }
+
+    h1 { padding: 20px; }
+
+    input {
+      padding: 10px;
+      width: 200px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #22c55e;
+      color: white;
+      cursor: pointer;
+    }
+
+    .card {
+      background: #1e293b;
+      width: 320px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .price {
+      font-size: 28px;
+      margin: 10px 0;
+    }
+
+    .green { color: #22c55e; }
+    .red { color: #ef4444; }
+  </style>
+</head>
+<body>
+
+<h1>📈 Stock Dashboard (No API)</h1>
+
+<input type="text" id="symbolInput" placeholder="Enter Stock (e.g. TSLA)">
+<button onclick="startStock()">Load</button>
+
+<div class="card" id="stockCard" style="display:none;">
+  <h2 id="stockName"></h2>
+  <div class="price" id="price"></div>
+  <p>Open: <span id="open"></span></p>
+  <p>High: <span id="high"></span></p>
+  <p>Low: <span id="low"></span></p>
+</div>
+
+<script>
+
+let price;
+let interval;
+
+function startStock() {
+  const symbol = document.getElementById("symbolInput").value.trim().toUpperCase();
+
+  if (!symbol) {
+    alert("Enter stock name");
+    return;
+  }
+
+  clearInterval(interval);
+
+  document.getElementById("stockName").innerText = symbol;
+  document.getElementById("stockCard").style.display = "block";
+
+  // Random base price between 100 and 500
+  price = Math.random() * 400 + 100;
+
+  updateStock();
+  interval = setInterval(updateStock, 2000);
+}
+
+function updateStock() {
+  let change = (Math.random() - 0.5) * 5;
+  price += change;
+
+  let open = price - (Math.random() * 3);
+  let high = price + (Math.random() * 5);
+  let low = price - (Math.random() * 5);
+
+  const priceElement = document.getElementById("price");
+
+  priceElement.innerHTML = "$" + price.toFixed(2);
+
+  if (change >= 0) {
+    priceElement.className = "price green";
+  } else {
+    priceElement.className = "price red";
+  }
+
+  document.getElementById("open").innerHTML = "$" + open.toFixed(2);
+  document.getElementById("high").innerHTML = "$" + high.toFixed(2);
+  document.getElementById("low").innerHTML = "$" + low.toFixed(2);
+}
+
+</script>
+
+</body>
+</html>
